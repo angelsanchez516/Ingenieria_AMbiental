@@ -81,27 +81,61 @@
    Para producción: reemplazar setTimeout por fetch() o EmailJS.
    ---------------------------------------------------------- */
 (function initForm() {
+  // Cargar EmailJS
+  emailjs.init('utopcVYzgjKGSga27'); // 🔴 reemplaza esto
+
   const btn = document.getElementById('form-submit-btn');
   if (!btn) return;
 
   btn.addEventListener('click', () => {
     const original = btn.textContent;
 
+    // Recoger datos del formulario
+    const params = {
+      nombre:   document.getElementById('nombre').value,
+      empresa:  document.getElementById('empresa').value,
+      email:    document.getElementById('email').value,
+      servicio: document.getElementById('servicio').value,
+      mensaje:  document.getElementById('mensaje').value,
+    };
+
+    // Validación básica
+    if (!params.nombre || !params.email || !params.mensaje) {
+      btn.textContent = '⚠️ Completa los campos obligatorios';
+      setTimeout(() => btn.textContent = original, 2500);
+      return;
+    }
+
+    // Enviar
     btn.textContent  = 'Enviando...';
     btn.disabled     = true;
     btn.style.opacity = '0.75';
 
-    setTimeout(() => {
-      btn.textContent       = '✓ Mensaje enviado correctamente';
-      btn.style.background  = 'var(--fern)';
-      btn.style.opacity     = '1';
-
+    emailjs.send(
+      'service_ea3s7ps',   // ✅ ya lo tienes
+      'template_uyx1y15',    // 🔴 reemplaza esto
+      params
+    )
+    .then(() => {
+      btn.textContent      = '✓ Mensaje enviado correctamente';
+      btn.style.background = 'var(--fern)';
+      btn.style.opacity    = '1';
       setTimeout(() => {
         btn.textContent      = original;
         btn.style.background = '';
         btn.disabled         = false;
       }, 3500);
-    }, 1400);
+    })
+    .catch(() => {
+      btn.textContent  = '❌ Error al enviar, intenta de nuevo';
+      btn.style.background = '#c0392b';
+      btn.style.opacity = '1';
+      setTimeout(() => {
+        btn.textContent      = original;
+        btn.style.background = '';
+        btn.disabled         = false;
+      }, 3500);
+    });
   });
 })();
 
