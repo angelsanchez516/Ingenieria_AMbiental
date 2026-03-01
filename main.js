@@ -113,7 +113,7 @@
 
     emailjs.send(
       'service_ea3s7ps',   // ✅ ya lo tienes
-      'template_uyx1y15',    // 🔴 reemplaza esto
+      'template_x5vzo95',    // 🔴 reemplaza esto
       params
     )
     .then(() => {
